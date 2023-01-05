@@ -26,11 +26,7 @@ const viewProducts = async(req,res)=>{
             allProducts
         })
     }else{
-        res.render('home',{
-            user:null,
-            hasProducts:allProducts.length>0,
-            allProducts
-        })
+        res.redirect('/account/login')
     }
 }
 
