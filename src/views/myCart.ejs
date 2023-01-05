@@ -1,0 +1,78 @@
+<%- include('partials/head') %> 
+<%- include('partials/navbar') %>
+
+<% const listProducts = addedProducts  %> 
+
+<% if (addedProducts.length>0) { %>
+    <div class="list-products" id="products">
+        <div class="list-cart">
+            <p></p>
+            <p>Productos</p>
+            <p>Precio</p>
+            <p>Cantidad</p>
+            <div></div>
+        </div>
+        <% addedProducts.forEach(product => { %>
+            <div class="list-cart" id="product_<%= product._id %>">
+                <img src="<%= product.image %>" class="img-list"></img>
+                <p id="name_<%= product._id %>"><%= product.name %></p>
+                <p id="price_<%= product._id %>">$<%= product.price %></p>
+                <p id="quantity_<%= product._id %>"><%= product.quantity %></p>
+                <p></p>
+                <button class="delete-button" id="<%= product._id %>" onclick="deleteFromCart(id)">x</button>
+            </div>
+        <% }) %>
+        <div class="list-cart">
+            <p></p>
+            <p></p>
+            <p></p>
+            <p>Total:</p>
+            <p>$<%= total %></p>
+            <div></div>
+        </div>
+    </div>
+<% } else { %>
+    <p class="no-products">Ups, aún no hay productos.</p>
+<% } %>
+
+<div style="text-align: center; margin: 20 0;">
+    <button class="boton-ok" onclick="backHome()">Ver más productos</button></a>
+    <button class="boton-ok" onclick="comprar()">Comprar</button>
+</div>
+
+<script>
+    const toRemove = [];
+    const params = new Proxy(new URLSearchParams(window.location.search),{
+        get: (searchParams,prop) => searchParams.get(prop)
+    })
+    const idUser = params.idU
+
+    function comprar(valor){
+        let obj = {
+            idUser:idUser
+        }
+        fetch('/my-cart/order',{
+            method:"POST",
+            body:JSON.stringify(obj),
+            headers:{
+                "Content-Type": "application/json"
+            }
+        }).then(result=>result.json()).then(json=>{
+            console.log(json)
+            window.location.replace('/success');
+        })
+    }
+
+    function deleteFromCart(id){
+        fetch('/my-cart/'+id,{
+            method:'DELETE',
+        }).then(res=>res.json()).then(json=>{
+            console.log(json)
+            window.location.replace('/my-cart?idU='+idUser);
+        });
+    }
+
+    function backHome(){
+        window.location.replace('/home')
+    }
+</script>

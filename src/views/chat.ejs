@@ -1,0 +1,78 @@
+<%- include('partials/head') %> 
+<%- include('partials/navbar') %>
+
+<h2 class="title">Chat</h2>
+<div class="chat-container">
+    <div id="chat" class="chat-box">
+    </div>
+    <div class="box-chat-container">
+        <form id="write-message" class="writing-box">
+            <textarea type="text" name="message" id="message" placeholder="Escribe tu mensaje aqui." class="add-message"></textarea>
+            <input type="submit" class="boton-ok" value="Enviar">
+        </form>
+    </div>
+    <button onclick="seeMyMessages()" class="boton-ok">Ver solo mis mensajes</button>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+    const Chat = document.getElementById('write-message');
+    const params = new Proxy(new URLSearchParams(window.location.search),{
+        get: (searchParams,prop) => searchParams.get(prop)
+    })
+    const idUser = params.idU
+
+    Chat.addEventListener('submit',evt=>{
+        evt.preventDefault();
+        const message = document.getElementById('message');
+        let messageContainer = {
+            message: message.value,
+            date: new Date(Date.now()).toUTCString(),
+            idUser
+        };
+        socket.emit('messages', messageContainer)
+    })
+
+    socket.on("newMessage", data=>{
+        const box = document.getElementById('chat')
+        const newMessage = data.map(element => {
+            return  `<div>
+                        <span class="user-style">${element.author}</span>
+                        <span class="date-style">${element.date}</span>
+                        <span class="message-style">${element.message}</span>
+                    </div>`
+        })
+        box.innerHTML = newMessage.join('\n')
+    })
+
+    socket.on('connectionChat',data=>{
+        const box = document.getElementById('chat')
+        const newMessage = data.map(element => {
+            return  `<div>
+                        <span class="user-style">${element.author}</span>
+                        <span class="date-style">${element.date}</span>
+                        <span class="message-style">${element.message}</span>
+                    </div>`
+        })
+        box.innerHTML = newMessage.join('\n')
+    })
+
+
+    function seeMyMessages() {
+        socket.emit('myMessages', idUser)
+    }
+
+    socket.on('myListMessages',data=>{
+        const box = document.getElementById('chat')
+        const newMessage = data.map(element => {
+            return  `<div>
+                        <span class="user-style">${element.author}</span>
+                        <span class="date-style">${element.date}</span>
+                        <span class="message-style">${element.message}</span>
+                    </div>`
+        })
+        box.innerHTML = newMessage.join('\n')
+    })
+
+</script>

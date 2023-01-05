@@ -1,0 +1,43 @@
+<%- include('partials/head') %> 
+<%- include('partials/navbar') %>
+<div>
+    <h1 class="title">Eliminar producto</h1>
+    <form id="deleteProduct" class="form-register" style="margin: 0 50;">
+        <label class="title-card">ID</label> 
+        <input id="productID" name="productID" class="complete grid-name" required></input>
+        <input type="submit" class="boton-ok grid-enviar" value="Eliminar producto">
+    </form>
+</div>
+
+<div style="text-align: center; margin: 20 0;">
+    <button class="boton-ok" onclick="home()">Inicio</button>
+    <button class="boton-ok" onclick="goToProducts()">Ver listado de productos</button>
+    <button class="boton-ok" onclick="goToFormAdd()">Agregar</button>
+    <button class="boton-ok" onclick="goToFormUpdate()">Modificar</button>
+</div>
+
+<script>
+    const form = document.getElementById('deleteProduct');
+    const querystring = window.location.search
+    const params = new URLSearchParams(querystring)
+    let productID = params.get('pID')
+
+    form.addEventListener('submit',evt=>{
+        evt.preventDefault();
+        console.log("eliminar")
+        let data = new FormData(form);
+        let obj = {};
+        data.forEach((value,key)=>obj[key]=value);
+        console.log(obj)
+        fetch('/form/products',{
+            method:'DELETE',
+            body:JSON.stringify(obj),
+            headers:{
+                "Content-Type":"application/json"
+            }
+        }).then(res=>res.json()).then(json=>{
+            console.log(json)
+            window.location.replace('/api/products');
+        });
+    })
+</script>

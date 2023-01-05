@@ -1,0 +1,63 @@
+<header>
+    <nav class="elnav">
+        <ul class="menu-style">
+            <% if (user.role == 'user') { %>
+                <li onclick="homeProducts()">Productos</li>
+                <li onclick="goToMyCart(id)" id="<%= user.id %>">Mi carrito</li>
+                <li onclick="goToChat(id)" id="<%= user.id %>">Mensajes</li>
+                <li style="display: flex; align-items: center;" onclick="logout()"><% if (user.image) { %>
+                    <img src="http://localhost:8080/img/<%= user.image %>" alt="">
+                    <% } else { %>
+                    <img src="http://localhost:8080/img/default.png" alt="imagen de perfil" class="img-icon ">
+                    <% } %>
+                <span>Cerrar Sesión</span></li>
+            <% } else if (user.role == 'admin') { %>
+                <li onclick="goToProducts()">Productos</li>
+                <li onclick="goToCarts()">Carritos</li>
+                <li onclick="goToMessages()">Mensajes</a></li>
+                <li style="display: flex; align-items: center;" onclick="logout()"><% if (user.image) { %>
+                    <img src="http://localhost:8080/img/<%= user.image %>" alt="">
+                    <% } else { %>
+                        <img src="http://localhost:8080/img/defaultAdmin.png" alt="imagen de perfil" class="img-icon ">
+                    <% } %>
+                <span>Cerrar Sesión</span></li>
+            <% } %>
+        </ul>
+    </nav>
+</header>
+
+<script>
+    //client
+    function home(){
+        window.location.replace('/')
+    }
+    function homeProducts(){
+        window.location.replace('/#products')
+    }
+    function goToMyCart(id){
+        window.location.replace(`/my-cart?idU=${id}"`)
+    }
+    function goToChat(id){
+        window.location.replace(`/chat?idU=${id}"`)
+    }
+    
+    //admin
+    function goToFormAdd(){
+        window.location.replace('/form/add-products')
+    }
+    function goToFormDelete(){
+        window.location.replace('/delete-product')
+    }
+    function goToFormUpdate(){
+        window.location.replace('/form/update-product')
+    }
+    function goToProducts(){
+        window.location.replace('/api/products')
+    }
+    function goToCarts(){
+        window.location.replace('/api/carts')
+    }
+    function goToMessages(){
+        window.location.replace('/api/messages')
+    }
+</script>

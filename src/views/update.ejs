@@ -1,0 +1,76 @@
+<%- include('partials/head') %> 
+<%- include('partials/navbar') %>
+<div>
+    <h1 class="title">Modificar</h1>
+    <form id="updateProduct" class="form-register" style="margin: 0 50;">
+        <label class="title-card">Nombre</label> 
+        <input id="name" name="name" class="complete grid-name" value="<% if (product) { %><%= product.name %><% } %>" required></input>
+        <label class="title-card">ID</label> 
+        <input id="productID" name="productID" class="complete grid-name" value="<% if (product) { %><%= product._id %><% } %>" required></input>
+        <label class="title-card">Precio</label>
+        <label class="title-card">Stock</label>
+        <input id="price" name="price" type="number" class="complete" value="<% if (product) { %><%= product.price %><% } %>" required></input>
+        <input id="stock" name="stock" type="number" class="complete" value="<% if (product) { %><%= product.stock %><% } %>" required></input>
+        <!-- <input id="image" name="image" type="file" class="complete" ></input> -->
+        <label class="title-card">Categoria</label>
+        <label class="title-card">Sub categoria</label>
+        <select name="category" id="category" class="complete" required>
+            <option value="<% if (product) { %><%= product.category %><% } else { %><% } %>" selected><% if (product) { %><%= product.category %><% } else { %><% } %></option>
+            <option value="almacenamiento">Almacenamiento</option>
+            <option value="auriculares">Auriculares</option>
+            <option value="fuentes">Fuentes</option>
+            <option value="memorias RAM">Memorias RAM</option>
+            <option value="procesadores">Procesadores</option>
+            <option value="refrigeracion">Refrigeracion</option>
+        </select>
+        <select name="subCategory" id="subCategory" class="complete" required>
+            <option value="<% if (product) { %><%= product.subCategory %><% } else { %><% } %>" selected><% if (product) { %><%= product.subCategory %><% } else { %><% } %></option>
+            <option value="amd">AMD</option>
+            <option value="certificadas">Certificadas</option>
+            <option value="coolers">Coolers</option>
+            <option value="drr4">DDR4</option>
+            <option value="drr3">DDR3</option>
+            <option value="disco externo">Disco Externo</option>
+            <option value="gamer">Gamer</option>
+            <option value="genéricas">Genéricas</option>
+            <option value="hdd">HDD</option>
+            <option value="inalambricos">Inalambricos</option>
+            <option value="intel">Intel</option>
+            <option value="ssd">SSD</option>
+            <option value="ventiladores">Ventiladores</option>
+            <option value="watercoolers">Watercoolers</option>
+        </select>
+        <input type="submit" class="boton-ok grid-enviar" value="Modificar">
+    </form>
+</div>
+<div style="text-align: center; margin: 20 0;">
+    <button class="boton-ok" onclick="home()">Inicio</button>
+    <button class="boton-ok" onclick="goToProducts()">Ver listado de productos</button>
+    <button class="boton-ok" onclick="goToFormDelete()">Eliminar</button>
+    <button class="boton-ok" onclick="goToFormAdd()">Agregar</button>
+</div>
+
+<script>
+    const form = document.getElementById('updateProduct');
+    const querystring = window.location.search
+    const params = new URLSearchParams(querystring)
+    let productID = params.get('pID')
+    form.addEventListener('submit',evt=>{
+        evt.preventDefault();
+        let data = new FormData(form);
+        let obj = {};
+        data.forEach((value,key)=>obj[key]=value);
+        obj.id = productID
+        console.log(obj)
+        fetch('/form/update-product',{
+            method:'POST',
+            body:JSON.stringify(obj),
+            headers:{
+                "Content-Type":"application/json"
+            }
+        }).then(res=>res.json()).then(json=>{
+            console.log(json)
+            window.location.replace(`/api/products#${productID}`);
+        });
+    })
+</script>

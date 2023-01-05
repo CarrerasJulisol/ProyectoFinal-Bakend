@@ -1,0 +1,46 @@
+<%- include('partials/head') %> 
+<%- include('partials/navbar') %>
+
+<div class="grid-product-detail">
+    <h3 class="tittle-prod"><%= product.name %></h3>
+    <div class="config-img-container"><img src="<%= product.image %>" alt="<%= product.name %>" style="width: 70%;"></div>
+    <div>
+        <h4>Precio: <span class="style-price">$ <%= product.price %></span></h4>
+        <p>Categoria: <%= product.category %></p>
+        <p>Subcategoria: <%= product.subCategory %></p>
+        <div>
+            <button class="addToCart" id="<%= product.id %>" onclick="getID(id)">Agregar al carrito</button>
+            <button class="addToCart" onclick="backHome()">Volver</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let list = []
+    function getID(valor){
+        console.log("click")
+        const exist = list.findIndex(Element => Element.product === valor)
+        const prod = {
+            product:valor,
+            quantity:1
+        }
+        if(exist === -1){
+            list.push(prod);
+        }else{
+            list[exist].quantity++
+        }
+        fetch('/home',{
+            method:"POST",
+            body:JSON.stringify(list),
+            headers:{
+                "Content-Type": "application/json"
+            }
+        }).then(res=>res.json()).then(json=>{
+            console.log(json)
+        });
+    }
+
+    function backHome(){
+        window.location.replace('/');
+    }
+</script>

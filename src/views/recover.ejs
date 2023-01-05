@@ -1,0 +1,35 @@
+<%- include('./partials/head') %>
+
+<div class="register-container">
+    <h2 class="title">¿Olvidaste tu contraseña?</h2>
+    <p>Escribe tu direccion de email para enviarte el link de recuperacion de contraseña</p>
+    <div>
+        <form id="recoverForm" class="form-register">
+            <input id="email" name="email" class="complete" placeholder="Email"></input>
+            <input type="submit" class="boton-ok">
+        </form>
+    </div>
+
+    <div>
+        <button class="boton-ok" onclick="register()">Registrarme</button>
+        <button class="boton-ok" onclick="login()">Iniciar sesion</button>
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById('recoverForm');
+
+    form.addEventListener('submit',evt=>{
+        evt.preventDefault();
+        let data = new FormData(form);
+        let obj = {};
+        data.forEach((value,key)=>obj[key]=value);
+        fetch('/account/recover',{
+            method:'POST',
+            body:JSON.stringify(obj),
+            headers:{
+                "Content-Type":"application/json"
+            }
+        }).then(result=>result.json());
+    })
+</script>

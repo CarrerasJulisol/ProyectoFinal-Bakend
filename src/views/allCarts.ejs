@@ -1,0 +1,23 @@
+<%- include('partials/head') %> 
+<%- include('partials/navbar') %>
+
+<div style="margin: 20px;">
+    <h1 class="title">Carritos</h1>
+    <% all.forEach(element => { %>
+        <div class="grid-carts-admin">
+            <div>Carrito ID: <%= element._id %></div>
+            <div>Usuario ID: <%= element.userID %></div>
+            <div>Pedido:</div>
+            <% if (element.cart.length>0) { %>
+                <ul>
+                    <% element.cart.forEach(element => { %>
+                        <% const prod = allProducts.find(el=>el._id == element.product) %>
+                        <li><%= prod.name %></li>
+                    <% }) %>
+                </ul>
+            <% } else { %>
+                 <div>Aun no hay un pedido</div>
+            <% } %>
+        </div>
+    <% }) %>
+</div>

@@ -1,0 +1,17 @@
+<%- include('./partials/head') %>
+
+<h1> Tu sesion fue cerrada con exito</h1>
+<div>
+    <p>Esperamos verte nuevamente pronto!</p>
+</div>
+
+<div>
+    <button class="boton-ok"><a href="http://localhost:8080/account/login">Iniciar Sesion</a></button>
+    <button class="boton-ok"><a href="http://localhost:8080/account/register">Registrarme</a></button>
+</div>
+
+<script>
+    setTimeout(() => {
+        window.location.replace('/account/login');
+    }, 4000);
+</script>

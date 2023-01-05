@@ -1,0 +1,57 @@
+<%- include('partials/head') %> 
+<%- include('partials/navbar') %>
+
+<h2 class="title">Chat</h2>
+<div class="chat-container">
+    <div id="chat" class="chat-box">
+    </div>
+    <div class="box-chat-container">
+        <form id="write-message" class="writing-box">
+            <textarea type="text" name="message" id="message" placeholder="Escribe tu mensaje aqui." class="add-message"></textarea>
+            <input type="submit" class="boton-ok" value="Enviar">
+        </form>
+    </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+    const Chat = document.getElementById('write-message');
+
+    Chat.addEventListener('submit',evt=>{
+        evt.preventDefault();
+        const author = "Admin"
+        const message = document.getElementById('message');
+        let messageContainer = {
+            author,
+            message: message.value,
+            date: new Date(Date.now()).toUTCString()
+        };
+        console.log(messageContainer)
+        socket.emit('adminMessages', messageContainer)
+    })
+
+    socket.on("newMessage", data=>{
+        const box = document.getElementById('chat')
+        const newMessage = data.map(element => {
+            return  `<div>
+                        <span class="user-style">${element.author}</span>
+                        <span class="date-style">${element.date}</span>
+                        <span class="message-style">${element.message}</span>
+                    </div>`
+        })
+        box.innerHTML = newMessage.join('\n')
+    })
+
+    socket.on('connectionChat',data=>{
+        const box = document.getElementById('chat')
+        const newMessage = data.map(element => {
+            return  `<div>
+                        <span class="user-style">${element.author}</span>
+                        <span class="date-style">${element.date}</span>
+                        <span class="message-style">${element.message}</span>
+                    </div>`
+        })
+        box.innerHTML = newMessage.join('\n')
+    })
+</script>

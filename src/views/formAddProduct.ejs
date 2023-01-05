@@ -1,0 +1,67 @@
+<%- include('partials/head') %> 
+<%- include('partials/navbar') %>
+<h1 class="title" style="text-align: center;">Agrega un producto</h1>
+<div class="form-style">
+    <form id="addProducts" class="form-register">
+        <input id="name" name="name" class="complete grid-name" placeholder="Nombre del producto" required></input>
+        <input id="price" name="price" type="number" class="complete" placeholder="Precio" min="0" required></input>
+        <input id="stock" name="stock" type="number" class="complete" placeholder="Stock" min="0" required></input>
+        <!-- <input id="image" name="image" type="file" class="complete" ></input> -->
+        <select name="category" id="category" class="complete" aria-placeholder="Categoria" required>
+            <option value="none" selected disabled hidden>Categoria</option>
+            <option value="Almacenamiento">Almacenamiento</option>
+            <option value="Auriculares">Auriculares</option>
+            <option value="Fuentes">Fuentes</option>
+            <option value="Memorias RAM">Memorias RAM</option>
+            <option value="Procesadores">Procesadores</option>
+            <option value="Refrigeracion">Refrigeracion</option>
+        </select>
+        <select name="subCategory" id="subCategory" class="complete" aria-placeholder="Categoria" required>
+            <option value="none" selected disabled hidden>Sub categoria</option>
+            <option value="AMD">AMD</option>
+            <option value="Certificadas">Certificadas</option>
+            <option value="Coolers">Coolers</option>
+            <option value="DDR4">DDR4</option>
+            <option value="DDR3">DDR3</option>
+            <option value="Disco Externo">Disco Externo</option>
+            <option value="gamer">gamer</option>
+            <option value="Genéricas">Genéricas</option>
+            <option value="HDD">HDD</option>
+            <option value="inalambricos">inalambricos</option>
+            <option value="Intel">Intel</option>
+            <option value="SSD">SSD</option>
+            <option value="Ventiladores">Ventiladores</option>
+            <option value="Watercoolers">Watercoolers</option>
+        </select>
+        <input type="submit" class="boton-ok grid-enviar" value="Agregar">
+    </form>
+</div>
+<div style="text-align: center; margin: 20 0;">
+    <button class="boton-ok" onclick="home()">Inicio</button>
+    <button class="boton-ok" onclick="goToProducts()">Ver listado de productos</button>
+    <button class="boton-ok" onclick="goToFormAdd()">Agregar</button>
+    <button class="boton-ok" onclick="goToFormDelete()">Eliminar</button>
+</div>
+
+
+<script>
+    const form = document.getElementById('addProducts');
+
+    form.addEventListener('submit',evt=>{
+        evt.preventDefault();
+        let data = new FormData(form);
+        let obj = {};
+        data.forEach((value,key)=>obj[key]=value);
+        console.log(obj)
+        fetch('/form/products',{
+            method:'POST',
+            body:JSON.stringify(obj),
+            headers:{
+                "Content-Type":"application/json"
+            }
+        }).then(res=>res.json()).then(json=>{
+            console.log(json)
+            window.location.replace('/api/products');
+        });
+    })
+</script>

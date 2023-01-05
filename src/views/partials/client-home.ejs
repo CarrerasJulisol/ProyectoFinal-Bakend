@@ -1,0 +1,45 @@
+<h2 class="title">Productos</h2>
+<% if (hasProducts) { %>
+    <div class="grid" id="products">
+        <% allProducts.forEach(product => { %>
+            <div class="card">
+                <p class="title-card"><%= product.name %> </p>
+                <p>$<%= product.price %></p>
+                <img src="<%= product.image %>" class="img"></img>
+                <button class="addToCart" id="<%= product.id %>" onclick="getID(id)">Agregar al carrito</button>
+                <button class="addToCart" id="<%= product.id %>" onclick="seeDetails(id)">Ver detalles</button>
+            </div>
+        <% }) %>
+    </div>
+<% } else { %>
+    <p class="no-products">Ups, aún no hay productos.</p>
+<% } %>
+
+<script>
+    const list = [];
+    function getID(valor){
+        const exist = list.findIndex(Element => Element.product === valor)
+        const prod = {
+            product:valor,
+            quantity:1
+        }
+        if(exist === -1){
+            list.push(prod);
+        }else{
+            list[exist].quantity++
+        }
+        fetch('/',{
+            method:"POST",
+            body:JSON.stringify(list),
+            headers:{
+                "Content-Type": "application/json"
+            }
+        }).then(res=>res.json()).then(json=>{
+            console.log(json)
+        });
+    }
+
+    function seeDetails(id){
+        window.location.replace('/products/'+id)
+    }
+</script>

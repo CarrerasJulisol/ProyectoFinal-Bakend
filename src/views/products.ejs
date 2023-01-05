@@ -1,0 +1,82 @@
+<%- include('partials/head') %> 
+<%- include('partials/navbar') %>
+
+<h2 class="title">Productos</h2>
+<div style="text-align: center; margin: 20 0;">
+    <button class="boton-ok" onclick="home()">Inicio</button>
+    <button class="boton-ok" onclick="goToFormAdd()">Agregar</button>
+    <button class="boton-ok" onclick="goToFormUpdate()">Modificar</button>
+    <button class="boton-ok" onclick="goToFormDelete()">Eliminar</button>
+</div>
+<% if (hasProducts) { %>
+    <div class="list-products" id="products">
+        <div class="list">
+            <p>Imagen</p>
+            <p>Nombre</p>
+            <p>Categoria</p>
+            <p>Sub categoria</p>
+            <p>Precio</p>
+            <p>Stock</p>
+            <p>ID</p>
+            <div></div>
+        </div>
+        <% all.forEach(product => { %>
+            <div class="list" id="<%= product.id %>">
+                <img src="<%= product.image %>" class="img-list"></img>
+                <p><%= product.name %></p>
+                <p class="id-size"><%= product.category %></p>
+                <p class="id-size"><%= product.subCategory %></p>
+                <p>$<%= product.price %></p>
+                <p><%= product.stock %></p>
+                <p class="id-size"><%= product.id %></p>
+                <div class="buttonContainer">
+                    <a href="http://localhost:8080/form/update-product?pID=<%= product.id %>" class="updateButton"><img src="http://localhost:8080/img/pencil.png" alt="Modificar" class="img-botons"></a>
+                    <p onclick="modalDelete(id)" class="updateButton" id="<%=product.id %>" value=<%=product%>><img src="http://localhost:8080/img/delete.png" alt="Eliminar" class="img-botons"></p>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+<% } else { %>
+    <p class="no-products">Ups, aún no hay productos.</p>
+<% } %>
+
+    <div class="modal invisibility" id="modal">
+        <div class="modal-container">
+            <h2>Eliminar producto</h2>
+            <p>El siguiente producto se va a eliminar</p>
+            <h3>¿Esta seguro que quiere continuar?</h3>
+            <div>
+                <button class="boton-ok" onclick="yesDelete()">Si</button>
+                <button class="boton-ok" onclick="notDelete()">No</button>
+            </div>
+        </div>
+    </div>
+
+
+<script>
+    const modal = document.getElementById('modal')
+    const confirmButton = document.getElementById('yes')
+    let IDproduct = 0
+    let product = {}
+
+    function modalDelete(id){
+        IDproduct = id
+        modal.className = "modal"
+    }
+
+    function notDelete(){
+        modal.className = "modal invisibility"
+    }
+
+    function yesDelete(){
+        fetch('/api/products/'+IDproduct,{
+            method:'DELETE'
+        }).then(res=>res.json()).then(json=>{
+            console.log(json)
+            window.location.replace('/api/products');
+        });
+    }
+
+
+
+</script>

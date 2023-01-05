@@ -1,0 +1,40 @@
+<%- include('./partials/head') %>
+
+<div class="register-container">
+    <h2 class="title">Iniciar Sesion</h2>
+
+    <div>
+        <form id="loginForm" class="form-register">
+            <input id="email" name="email" class="complete" placeholder="Email"></input>
+            <input type="password" id="password" name="password" class="complete" placeholder="Contraseña"></input>
+            <input type="submit" class="boton-ok">
+        </form>
+    </div>
+
+    <div>
+        <button class="boton-ok" onclick="register()">Registrarme</button>
+        <button class="boton-ok" onclick="recover()">Olvide mi contraseña</button>
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById('loginForm');
+
+    form.addEventListener('submit',evt=>{
+        console.log('click')
+        evt.preventDefault();
+        let data = new FormData(form);
+        let obj = {};
+        data.forEach((value,key)=>obj[key]=value);
+        fetch('/account/login',{
+            method:'POST',
+            body:JSON.stringify(obj),
+            headers:{
+                "Content-Type":"application/json"
+            }
+        }).then(res=>res.json()).then(json=>{
+            console.log(json)
+            window.location.replace('/');
+        });
+    })
+</script>
