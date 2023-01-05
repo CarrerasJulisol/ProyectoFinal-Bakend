@@ -5,7 +5,7 @@ import { publicValidation, privateValidation } from "../middlewares/auth.js";
 
 const router = new Router();
 
-router.get('/',viewsController.viewProducts);
+router.get('/',privateValidation,viewsController.viewProducts);
 router.get('/home',viewsController.viewHome);
 router.post('/',privateValidation,cartsController.saveAtCart);
 
