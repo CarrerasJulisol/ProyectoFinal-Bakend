@@ -30,8 +30,8 @@
                 <p><%= product.stock %></p>
                 <p class="id-size"><%= product.id %></p>
                 <div class="buttonContainer">
-                    <a href="http://localhost:8080/form/update-product?pID=<%= product.id %>" class="updateButton"><img src="http://localhost:8080/img/pencil.png" alt="Modificar" class="img-botons"></a>
-                    <p onclick="modalDelete(id)" class="updateButton" id="<%=product.id %>" value=<%=product%>><img src="http://localhost:8080/img/delete.png" alt="Eliminar" class="img-botons"></p>
+                    <span onclick="goToUpdateID(id)" class="updateButton" id="<%= product.id %>"><img src="/img/pencil.png" alt="Modificar" class="img-botons"></span>
+                    <span onclick="modalDelete(id)" class="updateButton" id="<%=product.id %>" value=<%=product%>><img src="/img/delete.png" alt="Eliminar" class="img-botons"></span>
                 </div>
             </div>
         <% }) %>
@@ -58,6 +58,10 @@
     const confirmButton = document.getElementById('yes')
     let IDproduct = 0
     let product = {}
+
+    function goToUpdateID(id){
+        window.location.redirect(`form/update-product?pID=${id}`)
+    }
 
     function modalDelete(id){
         IDproduct = id

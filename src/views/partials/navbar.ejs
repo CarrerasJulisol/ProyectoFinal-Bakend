@@ -6,9 +6,9 @@
                 <li onclick="goToMyCart(id)" id="<%= user.id %>">Mi carrito</li>
                 <li onclick="goToChat(id)" id="<%= user.id %>">Mensajes</li>
                 <li style="display: flex; align-items: center;" onclick="logout()"><% if (user.image) { %>
-                    <img src="http://localhost:8080/img/<%= user.image %>" alt="">
+                    <img src="/img/<%= user.image %>" alt="">
                     <% } else { %>
-                    <img src="http://localhost:8080/img/default.png" alt="imagen de perfil" class="img-icon ">
+                    <img src="/img/default.png" alt="imagen de perfil" class="img-icon ">
                     <% } %>
                 <span>Cerrar Sesión</span></li>
             <% } else if (user.role == 'admin') { %>
@@ -16,9 +16,9 @@
                 <li onclick="goToCarts()">Carritos</li>
                 <li onclick="goToMessages()">Mensajes</a></li>
                 <li style="display: flex; align-items: center;" onclick="logout()"><% if (user.image) { %>
-                    <img src="http://localhost:8080/img/<%= user.image %>" alt="">
+                    <img src="/img/<%= user.image %>" alt="">
                     <% } else { %>
-                        <img src="http://localhost:8080/img/defaultAdmin.png" alt="imagen de perfil" class="img-icon ">
+                        <img src="/img/defaultAdmin.png" alt="imagen de perfil" class="img-icon ">
                     <% } %>
                 <span>Cerrar Sesión</span></li>
             <% } %>
