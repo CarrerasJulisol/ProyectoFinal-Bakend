@@ -10,9 +10,9 @@ dotenv.config({
 
 export default {
     app:{
-        MODE:process.env.MODE || 'PROD',
-        PORT:process.env.PORT || 8080,
-        DEBUG:process.env.DEBUG || false,
+        MODE:process.env.MODE,
+        PORT:process.env.PORT,
+        DEBUG:process.env.DEBUG,
         DOMAIN:process.env.DOMAIN,
         PERSISTENCE:process.env.PERSIST
     },
